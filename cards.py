@@ -26,7 +26,8 @@ def generate_2D_card(orientation: str, value="#", suit="#"):
         case "up":
             extra_space = " "
         case "down":
-            extra_space = "#"
+            extra_space = "#"            
+    
             
     top = ["+", "-", "-", "-", "+", "   "]
     middle1 = ["|", value, extra_space, " ", "|", "   "]
@@ -34,7 +35,7 @@ def generate_2D_card(orientation: str, value="#", suit="#"):
     middle3 = ["|", " ", extra_space, value, "|", "   "]
     bottom = ["+", "-", "-", "-", "+", "   "]
     
-    return [row for row in [top, middle1, middle2, middle3, bottom]]
+    return  [row for row in [top, middle1, middle2, middle3, bottom]]
     
        
 def display_card_front(card_value: str, card_suit: str) -> None:
@@ -56,9 +57,9 @@ def display_card_back() -> None:
 def initialize_deck(number_of_decks):
     deck = []
     for suit in suits:
-        for i in range(2, 11):
+        for i in range(2, 10):
             deck.append((str(i), suit))
-        for j in ["J", "Q", "K", "A"]:
+        for j in ["T", "J", "Q", "K", "A"]:
             deck.append((j, suit))
     return deck * number_of_decks
         
@@ -89,11 +90,10 @@ class Deck:
 
 
 class Hand:
-    cards = []
-    
     def __init__(self):
         pass
     
+    cards = []
     def add_one_card(self, orientation: str, card: tuple):
         assert orientation in ["up", "down"]
         assert type(card) == tuple
@@ -103,7 +103,32 @@ class Hand:
         card_details = [card[0], card[1], orientation]
         self.cards.append(card_details)
 
-    def display_hand(self):
+    def get_cards(self) -> list:
+        return self.cards
+    
+    def get_score(self) -> int:
+        score = 0
+        for card in self.cards:
+            value = card[0]
+            orientation = card[2]
+            if orientation == "down":
+                continue
+            elif value in [str(x) for x in range(2, 10)]:
+                score += int(value)
+            elif value in ["T", "J", "Q", "K"]:
+                score += 10
+            elif value == "A":
+                score += 11
+            
+        aces = [card[0] for card in self.cards if card[0] == "A" and card[2] == "up"]
+        if score > 21 and len(aces) == 1:
+            score -= 10
+        if score > 21 and len(aces) == 2:
+            score -= 10
+        
+        return score
+                    
+    def display_hand(self) -> None:
         num_cards = len(self.cards)
         
         row1 = num_cards * generate_2D_card("down")[0]
@@ -135,11 +160,14 @@ class Hand:
 
 
 deck = Deck()
+dealer = Hand()
 player = Hand()
 
 
-player.add_one_card("down", deck.draw_one_card())
-player.add_one_card("up", deck.draw_one_card())
-player.add_one_card("up", deck.draw_one_card())
+dealer.add_one_card("down", deck.draw_one_card())
+dealer.add_one_card("up", deck.draw_one_card())
+dealer.add_one_card("up", deck.draw_one_card())
+dealer.add_one_card("up", deck.draw_one_card())
 
-player.display_hand()   
+dealer.display_hand()
+print(dealer.get_score())
