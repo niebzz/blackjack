@@ -120,11 +120,13 @@ class Hand:
             elif value == "A":
                 score += 11
             
-        aces = [card[0] for card in self.cards if card[0] == "A" and card[2] == "up"]
-        if score > 21 and len(aces) == 1:
+        aces = len([card[0] for card in self.cards if card[0] == "A" and card[2] == "up"])
+        
+        while aces >= 1:
+            if score <= 21:
+                return score
             score -= 10
-        if score > 21 and len(aces) == 2:
-            score -= 10
+            aces -= 1 
         
         return score
                     
@@ -164,7 +166,7 @@ dealer = Hand()
 player = Hand()
 
 
-dealer.add_one_card("down", deck.draw_one_card())
+dealer.add_one_card("up", deck.draw_one_card())
 dealer.add_one_card("up", deck.draw_one_card())
 dealer.add_one_card("up", deck.draw_one_card())
 dealer.add_one_card("up", deck.draw_one_card())
