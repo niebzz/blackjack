@@ -90,10 +90,9 @@ class Deck:
 
 
 class Hand:
-    def __init__(self):
-        pass
+    def __init__(self, cards=0):
+        self.cards = list(range(cards))
     
-    cards = []
     def add_one_card(self, orientation: str, card: tuple):
         assert orientation in ["up", "down"]
         assert type(card) == tuple
@@ -127,12 +126,10 @@ class Hand:
                 return score
             score -= 10
             aces -= 1 
-        
         return score
                     
     def display_hand(self) -> None:
         num_cards = len(self.cards)
-        
         row1 = num_cards * generate_2D_card("down")[0]
         row2 = num_cards * generate_2D_card("down")[1]
         row3 = num_cards * generate_2D_card("down")[2]
@@ -156,20 +153,32 @@ class Hand:
                 row3[2 + (i * 6)] = s
                 row3[3 + (i * 6)] = " "
        
-        
         for row in [row1, row2, row3, row4, row5]:
-            print("".join(row))
+            print("".join(row)) 
 
 
+## Testing
 deck = Deck()
 dealer = Hand()
 player = Hand()
 
 
+dealer.add_one_card("down", deck.draw_one_card())
+player.add_one_card("up", deck.draw_one_card())
+
 dealer.add_one_card("up", deck.draw_one_card())
-dealer.add_one_card("up", deck.draw_one_card())
-dealer.add_one_card("up", deck.draw_one_card())
-dealer.add_one_card("up", deck.draw_one_card())
+player.add_one_card("up", deck.draw_one_card())
 
 dealer.display_hand()
-print(dealer.get_score())
+print(f"Dealer Score: {dealer.get_score()}")
+player.display_hand()
+print(f"Player Score: {player.get_score()}")
+
+def hit(hand: Hand):
+    hand.add_one_card("up", deck.draw_one_card())
+    hand.display_hand()
+    print(f"Player Score: {hand.get_score()}")
+
+move = input("Would you like to hit or stay?")
+if move.lower() == "hit":
+    hit(player)
