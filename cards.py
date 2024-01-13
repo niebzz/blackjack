@@ -1,8 +1,8 @@
 import random
 
-#################################
-### GENERAL CONSTANTS
-#################################
+###########################################
+### CONSTANTS
+###########################################
 
 NUM_DECKS = 1 # number of decks to play with
 
@@ -14,84 +14,132 @@ CLUBS = chr(9827)    # ♣
 suits = (HEARTS, SPADES, DIAMONDS, CLUBS)
 
 
-#################################
+###########################################
 ### ONE SINGLE CARD
-#################################
+###########################################
 
 
-def generate_2D_card(value="#", suit="#"):        
-    top = ["+", "-", "-", "-", "+"]
-    middle1 = ["|", value, "#", " ", "|"]
-    middle2 = ["|", "#", suit, "#", "|"]
-    middle3 = ["|", " ", "#", value, "|"]
-    bottom = ["+", "-", "-", "-", "+"]
+def generate_2D_card(orientation: str, value="#", suit="#"):
+    assert orientation.lower() in ["up", "down"]
+
+    match orientation:
+        case "up":
+            extra_space = " "
+        case "down":
+            extra_space = "#"
+            
+    top = ["+", "-", "-", "-", "+", "   "]
+    middle1 = ["|", value, extra_space, " ", "|", "   "]
+    middle2 = ["|", extra_space, suit, extra_space, "|", "   "]
+    middle3 = ["|", " ", extra_space, value, "|", "   "]
+    bottom = ["+", "-", "-", "-", "+", "   "]
     
     return [row for row in [top, middle1, middle2, middle3, bottom]]
     
        
-class Card:
-    def __init__(self, card: tuple):
-        if type(card) != tuple or len(card) != 2:
-            raise TypeError("Invalid Card. Please enter a valid card format.")
-        self.card = card
+def display_card_front(card_value: str, card_suit: str) -> None:
+    for row in generate_2D_card(orientation="up", value=card_value, suit=card_suit):
+        print("".join(row))
+        
                 
-
-    def get_card(self):
-        return self.card
-    
-        
-    def display_card(self, reverse=False):
-        if reverse:
-            for row in self.back:
-                print("".join(row))      
-        else:
-            for row in self.front:
-                print("".join(row))
-        
-        
-    front = generate_2D_card()
-    back = generate_2D_card() 
+def display_card_back() -> None:
+    for row in generate_2D_card(orientation="down"):
+        print("".join(row))
         
 
-#################################
+
+###########################################
 ### ENTIRE DECK
-#################################
+###########################################
 
 
 def initialize_deck(number_of_decks):
     deck = []
     for suit in suits:
         for i in range(2, 11):
-            deck.append((i, suit))
+            deck.append((str(i), suit))
         for j in ["J", "Q", "K", "A"]:
             deck.append((j, suit))
     return deck * number_of_decks
         
         
 class Deck:
-    def __init__(self, num_decks: int):
-        self.num_decks = num_decks
-
+    cards = initialize_deck(NUM_DECKS)
+    
+    def __init__(self):
+        random.shuffle(self.cards)
 
     def shuffle_deck(self):
+        self.cards = initialize_deck(NUM_DECKS)
         random.shuffle(self.cards)
-       
-        
+            
     def get_cards(self):
         return self.cards
     
-    
     def display_cards(self):
-        print(self.cards)       
+        print(self.cards)
+        
+    def draw_one_card(self):
+        return self.cards.pop(0)
             
                 
-    cards = initialize_deck(NUM_DECKS)
+###########################################
+### PLAYER OR DEALER'S HAND
+###########################################
+
+
+class Hand:
+    cards = []
     
+    def __init__(self):
+        pass
+    
+    def add_one_card(self, orientation: str, card: tuple):
+        assert orientation in ["up", "down"]
+        assert type(card) == tuple
+        assert type(card[0]) == str
+        assert type(card[1]) == str
+        
+        card_details = [card[0], card[1], orientation]
+        self.cards.append(card_details)
+
+    def display_hand(self):
+        num_cards = len(self.cards)
+        
+        row1 = num_cards * generate_2D_card("down")[0]
+        row2 = num_cards * generate_2D_card("down")[1]
+        row3 = num_cards * generate_2D_card("down")[2]
+        row4 = num_cards * generate_2D_card("down")[3]
+        row5 = num_cards * generate_2D_card("down")[4]
+        
+        values = [card[0] for card in self.cards]
+        suits = [card[1] for card in self.cards]
+        orientations = [card[2] for card in self.cards]
+        
+        for i, v in enumerate(values):
+            if orientations[i] == "up":               
+                row2[1 + (i * 6)] = v
+                row2[2 + (i * 6)] = " "
+                row4[3 + (i * 6)] = v
+                row4[2 + (i * 6)] = " "
+                
+        for i, s in enumerate(suits):
+            if orientations[i] == "up":               
+                row3[1 + (i * 6)] = " "
+                row3[2 + (i * 6)] = s
+                row3[3 + (i * 6)] = " "
+       
+        
+        for row in [row1, row2, row3, row4, row5]:
+            print("".join(row))
 
 
+deck = Deck()
+player = Hand()
 
-deck = Deck(1)
 
-card1 = deck.get_cards()
+player.add_one_card("down", deck.draw_one_card())
+player.add_one_card("up", deck.draw_one_card())
+player.add_one_card("up", deck.draw_one_card())
 
-print(card1)
+player.display_hand()   
