@@ -23,17 +23,23 @@ def deal_cards(deck: Deck, dealer: Hand, player: Hand):
     
 
 def play_blackjack(deck: Deck, dealer: Hand, player: Hand):
+    win_payout_ratio = 3/2
+    draw_payout_ratio = 1
+    lose_payout_ratio = 0
+    
     i = 0
     while True:
         if player.get_score() > 21:
             print(f"BUST! YOU LOSE!")
-            break
+            return lose_payout_ratio
         elif player.get_score() == 21:
-            print(f"BLACKJACK!")
-            break
+            break 
         
         if i == 0:
             deal_cards(deck, dealer, player)
+            if player.get_score() == 21:
+                print("BLACKJACK!")
+                return win_payout_ratio
         else:
             display_table(dealer, player) 
             
@@ -55,7 +61,7 @@ def play_blackjack(deck: Deck, dealer: Hand, player: Hand):
     while True:
         if dealer.get_score() > 21:
             print("DEALER BUSTED! YOU WIN!")
-            break   
+            return win_payout_ratio   
         elif dealer.get_score() >= 17:
             break
         new_card = deck.draw_one_card()
@@ -67,22 +73,18 @@ def play_blackjack(deck: Deck, dealer: Hand, player: Hand):
     
     if player_final_score == dealer_final_score:
         print("DRAW.")
-        payout = 1
+        return draw_payout_ratio
     elif player_final_score > dealer_final_score:
         print("YOU WIN!")
-        payout = 3/2
+        return win_payout_ratio
     else:
         print("YOU LOSE.")
-        payout = 0
-    
-    print(f"Total Payout: {payout}")    
-    return payout
+        return lose_payout_ratio
 
 
-# testing
-deck = Deck()
-dealer = Hand()
-player = Hand()
+# # testing
+# deck = Deck()
+# dealer = Hand()
+# player = Hand()
 
-# deal_cards(deck, dealer, player)
-play_blackjack(deck, dealer, player)
+# play_blackjack(deck, dealer, player)
