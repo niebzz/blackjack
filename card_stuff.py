@@ -160,3 +160,6 @@ class Hand:
             print("".join(row)) 
 
 
+    def reset_hand(self):
+        self.cards = list(range(0))
+

@@ -74,9 +74,8 @@ def main():
     
         MONEY += int(bet * payout_ratio)
     
-        # reset player & dealer hands after a single game is over
-        dealer_hand = Hand()
-        player_hand = Hand()
+        dealer_hand.reset_hand()
+        player_hand.reset_hand()
         
     print("GAME OVER! YOU LOST ALL OF YOUR MONEY.")
     
