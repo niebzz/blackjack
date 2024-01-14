@@ -102,9 +102,12 @@ class Hand:
         card_details = [card[0], card[1], orientation]
         self.cards.append(card_details)
 
-    def get_cards(self) -> list:
+    def get_cards(self):
         return self.cards
     
+    def flip_face_down_card(self):
+        self.cards[0][2] = "up"
+        
     def get_score(self) -> int:
         score = 0
         for card in self.cards:
@@ -119,7 +122,7 @@ class Hand:
             elif value == "A":
                 score += 11
             
-        aces = len([card[0] for card in self.cards if card[0] == "A" and card[2] == "up"])
+        aces = len([card[0] for card in self.cards if card[0] == "A" and orientation == "up"])
         
         while aces >= 1:
             if score <= 21:
@@ -157,28 +160,3 @@ class Hand:
             print("".join(row)) 
 
 
-## Testing
-deck = Deck()
-dealer = Hand()
-player = Hand()
-
-
-dealer.add_one_card("down", deck.draw_one_card())
-player.add_one_card("up", deck.draw_one_card())
-
-dealer.add_one_card("up", deck.draw_one_card())
-player.add_one_card("up", deck.draw_one_card())
-
-dealer.display_hand()
-print(f"Dealer Score: {dealer.get_score()}")
-player.display_hand()
-print(f"Player Score: {player.get_score()}")
-
-def hit(hand: Hand):
-    hand.add_one_card("up", deck.draw_one_card())
-    hand.display_hand()
-    print(f"Player Score: {hand.get_score()}")
-
-move = input("Would you like to hit or stay?")
-if move.lower() == "hit":
-    hit(player)
