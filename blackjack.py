@@ -1,31 +1,12 @@
 from card_stuff import Deck, Hand
-from user_input import ask_move   
-        
-                    
-def display_table(dealer: Hand, player: Hand):
-    print("--------------------------------")
-    dealer.display_hand()
-    print(f"Dealer Score: {dealer.get_score()}")
-    player.display_hand()
-    print(f"Player Score: {player.get_score()}")
-    
+from table_logic import deal_cards, display_table
+from user_input import ask_move, ask_bet
 
-def deal_cards(deck: Deck, dealer: Hand, player: Hand):
-    dealer.add_one_card("down", deck.draw_one_card())
-    player.add_one_card("up", deck.draw_one_card())
-    dealer.add_one_card("up", deck.draw_one_card())
-    player.add_one_card("up", deck.draw_one_card())
 
-    dealer.display_hand()
-    print(f"Dealer Score: {dealer.get_score()}")
-    player.display_hand()
-    print(f"Player Score: {player.get_score()}")
-    
-
-def play_blackjack(deck: Deck, dealer: Hand, player: Hand):
+def play_blackjack(deck: Deck, dealer: Hand, player: Hand) -> int:
     win_payout_ratio = 3/2
     draw_payout_ratio = 1
-    lose_payout_ratio = 0
+    lose_payout_ratio = -1
     
     i = 0
     while True:
@@ -41,10 +22,9 @@ def play_blackjack(deck: Deck, dealer: Hand, player: Hand):
                 print("BLACKJACK!")
                 return win_payout_ratio
         else:
-            display_table(dealer, player) 
-            
+            display_table(dealer, player)
+             
         move = ask_move()
-        
         if move == "hit":
             new_card = deck.draw_one_card()
             player.add_one_card("up", new_card)
@@ -54,7 +34,7 @@ def play_blackjack(deck: Deck, dealer: Hand, player: Hand):
             print(f"Player Final Score: {player.get_score()}")
             break
         i += 1
-    
+        
     dealer.flip_face_down_card()
     display_table(dealer, player)
     
@@ -80,11 +60,26 @@ def play_blackjack(deck: Deck, dealer: Hand, player: Hand):
     else:
         print("YOU LOSE.")
         return lose_payout_ratio
-
-
-# # testing
-# deck = Deck()
-# dealer = Hand()
-# player = Hand()
-
-# play_blackjack(deck, dealer, player)
+    
+    
+def main():
+    card_deck = Deck()
+    dealer_hand = Hand()
+    player_hand = Hand()
+    
+    MONEY = 50
+    while MONEY > 0:
+        bet = ask_bet(MONEY)
+        payout_ratio = play_blackjack(card_deck, dealer_hand, player_hand)
+    
+        MONEY += int(bet * payout_ratio)
+    
+        # reset player & dealer hands after a single game is over
+        dealer_hand = Hand()
+        player_hand = Hand()
+        
+    print("GAME OVER! YOU LOST ALL OF YOUR MONEY.")
+    
+    
+if __name__ == "__main__":
+    main()

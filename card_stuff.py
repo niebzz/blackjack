@@ -19,7 +19,7 @@ suits = (HEARTS, SPADES, DIAMONDS, CLUBS)
 ###########################################
 
 
-def generate_2D_card(orientation: str, value="#", suit="#"):
+def generate_2D_card(orientation: str, value="#", suit="#") -> list:
     assert orientation.lower() in ["up", "down"]
 
     match orientation:
@@ -54,7 +54,7 @@ def display_card_back() -> None:
 ###########################################
 
 
-def initialize_deck(number_of_decks):
+def initialize_deck(number_of_decks: int):
     deck = []
     for suit in suits:
         for i in range(2, 10):

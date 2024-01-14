@@ -1,4 +1,4 @@
-def ask_move():
+def ask_move() -> str:
     while True:
         moves = ["hit", "stand", "h", "s"]
         user_input = input(f"Would you like to '(H)it' or '(S)tand'?").lower()
@@ -12,7 +12,7 @@ def ask_move():
             print("Invalid input.")
             
             
-def ask_bet(money: int):
+def ask_bet(money: int) -> int:
     while True:
         print(f"You have ${money} available to play.")
         user_input = input(f"How much $ would you like to bet? [0-{money}]:")# Press 'quit' to exit.")
@@ -21,7 +21,8 @@ def ask_bet(money: int):
         try:
             bet = int(user_input)
         except:
-            break
-        if 0 <= bet <= money: 
-            return bet
+            continue
+        if bet >= 0:
+            if bet <= money: 
+                return bet
         
