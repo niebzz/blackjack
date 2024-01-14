@@ -53,11 +53,12 @@ def play_blackjack(deck: Deck, dealer: Hand, player: Hand):
     while True:
         if player.get_score() > 21:
             print(f"BUST! YOU LOSE!")
-            exit()
+            break
         elif player.get_score() == 21:
             print(f"BLACKJACK!")
             break
         
+        display_table(dealer, player)
         move = ask_move()
         
         if move == "hit":
@@ -75,13 +76,13 @@ def play_blackjack(deck: Deck, dealer: Hand, player: Hand):
     while True:
         if dealer.get_score() > 21:
             print("DEALER BUSTED! YOU WIN!")
-            exit()   
+            break   
         elif dealer.get_score() >= 17:
             display_table(dealer, player)
             break
         new_card = deck.draw_one_card()
         dealer.add_one_card("up", new_card)
-
+        display_table(dealer, player)
     
     display_table(dealer, player)
     p_final = player.get_score()
@@ -107,7 +108,6 @@ def main():
     player = Hand()
     
     MONEY = 50
-    
     i = 0
     while MONEY > 0:
         bet = ask_bet(int(MONEY))

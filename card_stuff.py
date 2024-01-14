@@ -4,7 +4,7 @@ import random
 ### CONSTANTS
 ###########################################
 
-NUM_DECKS = 1 # number of decks to play with
+NUM_DECKS = 2 # number of decks to play with
 
 HEARTS = chr(9829)   # ♥
 SPADES = chr(9824)   # ♠
