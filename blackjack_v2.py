@@ -1,4 +1,4 @@
-from card_stuff import Deck, Hand
+from card_stuff_v2 import Deck, Hand
 
 
 def set_table(deck: Deck, dealer: Hand, player: Hand):
@@ -15,7 +15,7 @@ def set_table(deck: Deck, dealer: Hand, player: Hand):
 def ask_move():
     while True:
         moves = ["hit", "stand", "h", "s"]
-        user_input = input(f"Would you like to '(H)it' or '(S)tand'? Press '(Q)uit to quit.").lower()
+        user_input = input(f"Would you like to '(H)it' or '(S)tand'? Press 'quit' to exit.").lower()
         if user_input in ["quit", "q"]:
             exit()
         if user_input in moves:
