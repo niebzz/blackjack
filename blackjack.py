@@ -63,6 +63,12 @@ def play_blackjack(deck: Deck, dealer: Hand, player: Hand) -> int:
     
     
 def main():
+    print("""
+####################################
+####    WELCOME TO BLACKJACK    ####
+####################################
+          """)
+    
     card_deck = Deck()
     dealer_hand = Hand()
     player_hand = Hand()
