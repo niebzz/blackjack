@@ -5,7 +5,7 @@ python -m blackjack
 to play the game. Type 'quit' if you want to exit the game.
 
 
-The start of the game will look something like this:
+The start of the game will look something like the below text, and it will allow you to continue playing until you run out of money.
 ```
 You have $50 available to play.
 How much $ would you like to bet? [0-50]:15
