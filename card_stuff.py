@@ -6,10 +6,10 @@ import random
 
 NUM_DECKS = 2  # number of decks to play with
 
-HEARTS = chr(9829)   # ♥
-SPADES = chr(9824)   # ♠
+HEARTS = chr(9829)  # ♥
+SPADES = chr(9824)  # ♠
 DIAMONDS = chr(9830)  # ♦
-CLUBS = chr(9827)    # ♣
+CLUBS = chr(9827)  # ♣
 
 suits = (HEARTS, SPADES, DIAMONDS, CLUBS)
 
@@ -120,8 +120,9 @@ class Hand:
             elif value == "A":
                 score += 11
 
-        aces = len([card[0] for card in self.cards if card[0]
-                   == "A" and orientation == "up"])
+        aces = len(
+            [card[0] for card in self.cards if card[0] == "A" and orientation == "up"]
+        )
 
         while aces >= 1:
             if score <= 21:

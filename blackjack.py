@@ -4,7 +4,7 @@ from user_input import ask_move, ask_bet
 
 
 def play_blackjack(deck: Deck, dealer: Hand, player: Hand) -> int:
-    win_payout_ratio = 3/2
+    win_payout_ratio = 3 / 2
     draw_payout_ratio = 1
     lose_payout_ratio = -1
 
@@ -63,11 +63,13 @@ def play_blackjack(deck: Deck, dealer: Hand, player: Hand) -> int:
 
 
 def main():
-    print("""
+    print(
+        """
 ####################################
 #       WELCOME TO BLACKJACK       #
 ####################################
-          """)
+          """
+    )
 
     card_deck = Deck()
     dealer_hand = Hand()

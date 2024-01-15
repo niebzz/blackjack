@@ -1,8 +1,7 @@
 def ask_move() -> str:
     while True:
         moves = ["hit", "stand", "h", "s"]
-        user_input = input(
-            f"Would you like to 'HIT' or 'STAND'?:").lower().strip()
+        user_input = input(f"Would you like to 'HIT' or 'STAND'?:").lower().strip()
         if user_input in ["quit", "q"]:
             exit()
         if user_input in moves:
@@ -16,8 +15,9 @@ def ask_move() -> str:
 def ask_bet(money: int) -> int:
     while True:
         print(f"You have ${money} available to play.")
-        user_input = input(
-            f"How much $ would you like to bet? [0-{money}]:").lower().strip()
+        user_input = (
+            input(f"How much $ would you like to bet? [0-{money}]:").lower().strip()
+        )
         if user_input == "quit":
             exit()
         try:
